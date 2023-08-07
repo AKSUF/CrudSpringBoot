@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Custom@X</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item  nav-link">
+                        <a href="/api/v1/auth/login" class="text-decoration-none">Login</a>
+                    </li>
+                    <li class="nav-item nav-link">
+                        <a href="/api/v1/auth/registration" class="text-decoration-none">Registration</a>
+                    </li>
+
+                    <li class="nav-item nav-link">
+                        <a href="/api/v1/auth/" class="text-decoration-none">Demo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Login Form -->
+    <div class="container mt-5 border" id="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <form id="loginForm">
+                    <h3 class="mb-3 text-center">Login Form</h3>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="error-message" class="alert alert-fail" style="display:none" ></div>
+    <div id="success-message" class="alert alert-success" style="display:none"></div>
+
+
+    <!-- Demo Link (Initially hidden) -->
+    <a href="/api/v1/auth/" id="demoLink" style="display: none;">Demo</a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Function to handle login form submission
+            $("#loginForm").submit(function(event) {
+                event.preventDefault();
+                var username = $("#username").val();
+                var password = $("#password").val();
+
+                // AJAX request to login endpoint
+                $.ajax({
+                    url: "http://localhost:8285/api/v1/auth/login",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "login_id": username,
+                        "password": password
+                    }),
+                    success: function(response) {
+                        // Store the JWT token in local storage (or cookie)
+                        var token = response.token;
+                        localStorage.setItem("jwtToken", token);
+                        localStorage.setItem("isLoggedIn", "true");
+                        // Hide the login form
+                        // $("#loginForm").hide();
+                        $("#container").hide();
+                        // Show the "Demo" link
+                        $("#box").show();
+                        $("#success-message").html("User login successfully").slideDown();
+                        $("#error-message").slideUp();
+                    },
+                    error: function(error) {
+                        $("#success-message").html("User login fail").slideDown();
+                        $("#error-message").slideUp();
+                    }
+                });
+            });
+
+
+
+
+        });
+    </script>
+
+    <!-- ... Rest of the HTML code ... -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-mNymZh8w6br2Ed3/ToB6q/DMpt2j9TCiRXU2Uj44MqdChNnQ2nR84l4P9frU3tlr9yE8rPyQtq/IqC4TxlN4A==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Custom@X</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item nav-link">
+                        <a href="/api/v1/auth/login" class="text-decoration-none">Login</a>
+                    </li>
+                    <li class="nav-item nav-link">
+                        <a href="/api/v1/auth/registration" class="text-decoration-none">Registration</a>
+                    </li>
+
+                    <li class="nav-item nav-link">
+                        <a href="/api/v1/auth/" class="text-decoration-none">Demo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="container">
+        <h2 class="text-center">Customer List</h2>
+        <div id="AddCustomer" class="mr-auto">
+            <button class="createBtn ">ADD Customer</button>
+        </div>
+
+        <div id="error-message"></div>
+        <div id="success-message"></div>
+
+        <table class="table table-bordered rounded-4 table-striped table-hover mt-3">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">First Name</th>
+                    <th class="text-center">Last Name</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Phone</th>
+                    <th class="text-center">Update</th>
+                    <th class="text-center">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="customerTableBody">
+                <!-- Data will be populated here through Ajax -->
+            </tbody>
+        </table>
+
+
+        <div id="createform" class="container mx-auto border" style="display:none">
+            <div id="addForm">
+                <form id="customerAddForm" class="row g-3">
+                    <h3 id="addFormTitle" class="col-12 text-center">Add Customer</h3>
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">First Name:</label>
+                        <input type="text" name="first_name" id="addFirstNameInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Last Name:</label>
+                        <input type="text" name="last_name" id="addLastNameInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="street" class="form-label">Street:</label>
+                        <input type="text" name="street" id="addStreetInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="address" class="form-label">Address:</label>
+                        <input type="text" name="address" id="addAddressInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="city" class="form-label">City:</label>
+                        <input type="text" name="city" id="addCityInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="state" class="form-label">State:</label>
+                        <input type="text" name="state" id="addStateInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" name="email" id="addEmailInput" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input type="text" name="phone" id="addPhoneInput" class="form-control" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary mx-auto">Add Customer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="container border mt-5">
+            <div id="updateForm" style="display: none;">
+                <form id="customerUpdateForm" class="row g-3">
+                    <h3 id="updateFormTitle" class="col-12 text-center">Update Customer</h3>
+                    <input type="hidden" name="id" id="customerIdInput" class="form-control">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">First Name:</label>
+                        <input type="text" name="first_name" id="firstNameInput" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Last Name:</label>
+                        <input type="text" name="last_name" id="lastNameInput" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" name="email" id="emailInput" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input type="text" name="phone" id="phoneInput" class="form-control">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function() {
+
+
+
+            // Function to fetch and display data using Ajax
+            $("#customerAddForm").on("submit", function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                var token = localStorage.getItem("jwtToken");
+                if (!token) {
+                    $("#error-message").html("Do Not Authorized please Login").slideDown();
+                } else {
+                    var customerData = {
+                        first_name: $("#addFirstNameInput").val(),
+                        last_name: $("#addLastNameInput").val(),
+                        street: $("#addStreetInput").val(),
+                        address: $("#addAddressInput").val(),
+                        city: $("#addCityInput").val(),
+                        state: $("#addStateInput").val(),
+                        email: $("#addEmailInput").val(),
+                        phone: $("#addPhoneInput").val()
+                    };
+
+                    // Send the new customer data to the API using AJAX with a POST request
+                    $.ajax({
+                        url: "http://localhost:8285/api/v1/auth/create",
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        data: JSON.stringify(customerData),
+                        success: function(response) {
+                            console.log("Customer added successfully:", response);
+                            // Optionally, you can show a success message to the user after the addition
+                            // Clear the form fields after successful addition
+                            $("#customerAddForm")[0].reset();
+                            updateButtonsBasedOnLoginStatus();
+                            $("#success-message").html("Customer Added  successfully").slideDown();
+                            $("#error-message").slideUp();
+                        },
+                        error: function(error) {
+                            console.error("Error adding customer:", error);
+                            $("#error-message").html("Adding Customer Was not successful").slideDown();
+                            $("#success-message").slideUp();
+                        }
+                    });
+
+                }
+            });
+
+
+            function fetchCustomerData() {
+
+                var token = localStorage.getItem("jwtToken");
+                if (!token) {
+                    $("#error-message").html("Do Not Authorized please Login").slideDown();
+                } else {
+
+                    $.ajax({
+                        url: "http://localhost:8285/api/v1/auth/customers",
+                        type: "GET",
+                        dataType: "json",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        success: function(data) {
+                            // Populate the table with data
+                            var tableBody = $("#customerTableBody");
+                            tableBody.empty();
+                            updateButtonsBasedOnLoginStatus();
+                            $.each(data, function(index, customer) {
+                                var row = $("<tr>");
+                                row.append($("<td>").text(customer.id));
+                                row.append($("<td>").text(customer.first_name));
+                                row.append($("<td>").text(customer.last_name));
+                                row.append($("<td>").text(customer.email));
+                                row.append($("<td>").text(customer.phone));
+                                row.append($("<td>").html('<button class="updateBtn" data-customerid="' + customer.id + '"><i class="fas fa-edit text-primary"></i></button>'));
+                                row.append($("<td>").html('<button class="deleteBtn" data-customerid="' + customer.id + '"><i class="fas fa-trash text-danger"></button>'));
+                                tableBody.append(row);
+                            });
+                        },
+                        error: function(error) {
+                        	  $("#error-message").html("Something Problem to load data").slideDown();
+                              $("#success-message").slideUp();
+                        }
+                    });
+                }
+            }
+
+            // Function to handle success response and populate the form fields
+            function handleSuccessResponse(data) {
+                // Show the update form
+                $("#updateForm").show();
+                console.log("This is our show")
+
+                // Populate the form fields with the customer data
+                $("#updateFormTitle").text("Update Customer");
+                $("#customerIdInput").val(data.id);
+                console.log(data.id);
+                $("#firstNameInput").val(data.first_name);
+                console.log(data.first_name);
+                $("#lastNameInput").val(data.last_name);
+                console.log(data.last_name);
+                $("#emailInput").val(data.email);
+                $("#phoneInput").val(data.phone);
+            }
+
+            // Function to fetch customer data for the given customerId and populate the form fields
+            function showUpdateForm(customerId) {
+                var token = localStorage.getItem("jwtToken");
+                if (!token) {
+                    $("#error-message").html("Do Not Authorized please Login").slideDown();
+                } else {
+
+                    $.ajax({
+                        url: "http://localhost:8285/api/v1/auth/customer/" + customerId,
+                        type: "GET",
+                        dataType: "json",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        success: handleSuccessResponse,
+                        error: function(error) {
+                        	  $("#error-message").html("Update Form Is not Loaded").slideDown();
+                              $("#success-message").slideUp();
+                        }
+                    });
+                }
+            }
+
+
+            $("#customerUpdateForm").on("submit", function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Extract customer data from the form
+                var customerId = $("#customerIdInput").val();
+                var token = localStorage.getItem("jwtToken");
+                if (!token) {
+                    $("#error-message").html("Do Not Authorized please Login").slideDown();
+                } else {
+
+                    var customerData = {
+                        first_name: $("#firstNameInput").val(),
+                        last_name: $("#lastNameInput").val(),
+                        email: $("#emailInput").val(),
+                        phone: $("#phoneInput").val()
+                    };
+
+                    // Send the updated customer data to the API using AJAX with a PUT request
+                    $.ajax({
+                        url: "http://localhost:8285/api/v1/auth/customer/" + customerId,
+                        type: "PUT",
+                        dataType: "json",
+                        contentType: "application/json", // Set the content type to JSON
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        data: JSON.stringify(customerData), // Convert the data to JSON format
+                        success: function(response) {
+                            console.log("Customer updated successfully:", response);
+                            updateButtonsBasedOnLoginStatus();
+                            $("#success-message").html("Customer Update successfully").slideDown();
+                            $("#error-message").slideUp();
+                        },
+                        error: function(error) {
+                            console.error("Error updating customer:", error);
+                            $("#error-message").html("Customer  update was not successful").slideDown();
+                            $("#success-message").slideUp();
+                        }
+                    });
+                }
+            });
+
+            function deleteCustomer(customerId) {
+                var token = localStorage.getItem("jwtToken");
+                // Send the delete request to the API using AJAX with a DELETE request
+                if (!token) {
+                    $("#error-message").html("Do Not Authorized please Login").slideDown();
+                } else {
+                    $.ajax({
+                        url: "http://localhost:8285/api/v1/auth/customer/" + customerId,
+                        type: "DELETE",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        success: function(response) {
+                            console.log("Customer deleted successfully:", response);
+                            // Optionally, you can show a success message to the user after the delete
+                            // Refresh the customer list after successful delete
+                            fetchCustomerData();
+                            updateButtonsBasedOnLoginStatus();
+                            $("#success-message").html("User Deleted successfully").slideDown();
+                            $("#error-message").slideUp();
+                        },
+                        error: function(error) {
+                            console.error("Error deleting customer:", error);
+                            $("#error-message").html("User Delete was not successful").slideDown();
+                            $("#success-message").slideUp();
+                        }
+                    });
+                }
+            }
+
+            function updateButtonsBasedOnLoginStatus() {
+                var isLoggedIn = localStorage.getItem("isLoggedIn");
+
+                if (isLoggedIn === "true") {
+                    // User is logged in, enable the update and delete buttons
+                    $(".updateBtn, .deleteBtn").prop("disabled", false);
+                    $(".updateBtn, .deleteBtn").show(); // Show the buttons when the user is logged in
+                } else {
+                    // User is not logged in, disable and hide the update and delete buttons
+                    console.log("User not logged in.");
+                    $(".updateBtn, .deleteBtn").prop("disabled", true);
+                    $(".updateBtn, .deleteBtn").hide();
+                }
+            }
+
+
+
+            // Call the function to fetch and display customer data on page load
+            fetchCustomerData();
+            localStorage.setItem("isLoggedIn", "false");
+            updateButtonsBasedOnLoginStatus();
+
+
+            $("#customerTableBody").on("click", ".updateBtn", function() {
+                var customerId = $(this).data("customerid");
+                showUpdateForm(customerId);
+            });
+
+            // Event delegation for Delete button click
+            $("#customerTableBody").on("click", ".deleteBtn", function() {
+                var customerId = $(this).data("customerid");
+                deleteCustomer(customerId);
+            });
+
+            $("#AddCustomer").on("click", ".createBtn", function() {
+                $("#createform").show();
+            });
+
+        });
+    </script>
+</body>
+
+</html>
